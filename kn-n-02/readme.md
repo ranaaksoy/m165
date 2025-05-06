@@ -28,7 +28,7 @@
 
 #### 1. Erklärung: Alle Knoten und Kanten lesen
 
-```
+```cypher
 MATCH (n)-[r]->(m)
 RETURN n, r, m
 ```
@@ -55,7 +55,7 @@ RETURN n, r, m
 ##### Szenario 1: Alle Kurse und ihre Räume
 Zeige alle Kurse mit zugeordnetem Raum (inkl. Raum-Details).
 
-```
+```cypher
 MATCH (k:Kurs)-[:FINDET_STATT_IN]->(r:Raum)
 RETURN k.name AS Kursname, r.nummer AS Raum, r.gebaeude AS Gebaeude
 ```
@@ -65,7 +65,7 @@ RETURN k.name AS Kursname, r.nummer AS Raum, r.gebaeude AS Gebaeude
 ##### Szenario 2: Schüler:innen in einem bestimmten Kurs
 Zeige alle Schüler:innen im Kurs “Englisch A1”.
 
-```
+```cypher
 MATCH (s:Schueler)-[:BELEGT]->(k:Kurs)
 WHERE k.name = "Englisch A1"
 RETURN s.name, s.alter
@@ -77,7 +77,7 @@ RETURN s.name, s.alter
 ##### Szenario 3: Lehrpersonen, die keine Kurse unterrichten
 Zeige alle Lehrpersonen ohne Zuweisung.
 
-```
+```cypher
 MATCH (l:Lehrperson)
 OPTIONAL MATCH (l)-[r:UNTERRICHTET]->(k:Kurs)
 WHERE r IS NULL
@@ -89,7 +89,7 @@ RETURN l.name
 
 ##### Szenario 4: Welche Räume werden für fortgeschrittene Kurse verwendet?
 
-```
+```cypher
 MATCH (k:Kurs)-[:FINDET_STATT_IN]->(r:Raum)
 WHERE k.niveau = "Fortgeschritten"
 RETURN DISTINCT r.nummer, r.gebaeude
@@ -105,7 +105,7 @@ RETURN DISTINCT r.nummer, r.gebaeude
 
 #### 1. Ohne DETACH DELETE (Fehler bei bestehenden Beziehungen!)
 
-```
+```cypher
 MATCH (s:Schueler {name: "Tom"})
 DELETE s
 ```
@@ -113,7 +113,7 @@ DELETE s
 
 #### 2. Mit DETACH DELETE
 
-```
+```cypher
 MATCH (s:Schueler {name: "Tom"})
 DETACH DELETE s
 ```
@@ -126,7 +126,7 @@ DETACH DELETE s
 
 Der Kurs “Deutsch B2” dauert jetzt nur 90 Minuten.
 
-```
+```cypher
 MATCH (k:Kurs {name: "Deutsch B2"})
 SET k.dauer = 90
 ```
@@ -137,7 +137,7 @@ SET k.dauer = 90
 
 Frau Dubois unterrichtet nun Spanisch.
 
-```
+```cypher
 MATCH (l:Lehrperson {name: "Frau Dubois"})
 SET l.fach = "Spanisch"
 ```
@@ -148,7 +148,7 @@ SET l.fach = "Spanisch"
 
 Der Kurs “Französisch A2” findet neu im Raum “203” statt.
 
-```
+```cypher
 MATCH (k:Kurs {name: "Französisch A2"})-[rel:FINDET_STATT_IN]->(r:Raum)
 DELETE rel
 
@@ -164,7 +164,7 @@ CREATE (k)-[:FINDET_STATT_IN]->(newRaum)
 
 **Erklärung:** Sortiert Ergebnisse nach einem Feld (z.B. Name oder Alter).
 
-```
+```cypher
 MATCH (s:Schueler)
 RETURN s.name, s.alter
 ORDER BY s.alter DESC
@@ -177,7 +177,7 @@ Zeigt alle Schüler:innen sortiert nach Alter absteigend.
 
 **Erklärung:** Beschränkt die Anzahl der Ergebnisse.
 
-```
+```cypher
 MATCH (s:Schueler)
 RETURN s.name, s.alter
 ORDER BY s.alter DESC
