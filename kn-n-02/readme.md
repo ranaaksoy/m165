@@ -42,7 +42,7 @@ RETURN n, r, m
 
 **Beispiel:**
 
-```
+```cypher 
 MATCH (n:Kurs)
 OPTIONAL MATCH (n)-[r]->(m)
 RETURN n, r, m
