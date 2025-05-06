@@ -1,0 +1,91 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 800">
+  <!-- Collection: Spieler -->
+  <rect x="50" y="50" width="280" height="200" stroke="#000" fill="#f0f8ff" stroke-width="2" rx="10" ry="10" />
+  <text x="190" y="80" text-anchor="middle" font-family="Arial" font-weight="bold" font-size="18">Collection: Spieler</text>
+  <rect x="70" y="100" width="240" height="130" stroke="#000" fill="#fff" stroke-width="1" rx="5" ry="5" />
+  <text x="80" y="120" font-family="Courier New" font-size="12">_id: ObjectId</text>
+  <text x="80" y="140" font-family="Courier New" font-size="12">name: String</text>
+  <text x="80" y="160" font-family="Courier New" font-size="12">nickname: String</text>
+  <text x="80" y="180" font-family="Courier New" font-size="12">geburtsdatum: Date</text>
+  <text x="80" y="200" font-family="Courier New" font-size="12">nationalität: String</text>
+  <text x="80" y="220" font-family="Courier New" font-size="12">teams: [ObjectId] → Teams</text>
+  
+  <!-- Collection: Teams -->
+  <rect x="400" y="50" width="300" height="280" stroke="#000" fill="#f0f8ff" stroke-width="2" rx="10" ry="10" />
+  <text x="550" y="80" text-anchor="middle" font-family="Arial" font-weight="bold" font-size="18">Collection: Teams</text>
+  <rect x="420" y="100" width="260" height="210" stroke="#000" fill="#fff" stroke-width="1" rx="5" ry="5" />
+  <text x="430" y="120" font-family="Courier New" font-size="12">_id: ObjectId</text>
+  <text x="430" y="140" font-family="Courier New" font-size="12">name: String</text>
+  <text x="430" y="160" font-family="Courier New" font-size="12">gründungsdatum: Date</text>
+  <text x="430" y="180" font-family="Courier New" font-size="12">heimatland: String</text>
+  <text x="430" y="200" font-family="Courier New" font-size="12">ranking: Int</text>
+  <text x="430" y="220" font-family="Courier New" font-size="12">spieler: [ObjectId] → Spieler</text>
+  <text x="430" y="240" font-family="Courier New" font-size="12">turniere: [ObjectId] → Turniere</text>
+  <text x="430" y="260" font-family="Courier New" font-size="12">sponsoren: [</text>
+  <text x="450" y="280" font-family="Courier New" font-size="12">{ id: ObjectId, betrag: Float }</text>
+  <text x="430" y="300" font-family="Courier New" font-size="12">]</text>
+  
+  <!-- Collection: Turniere -->
+  <rect x="750" y="50" width="300" height="320" stroke="#000" fill="#f0f8ff" stroke-width="2" rx="10" ry="10" />
+  <text x="900" y="80" text-anchor="middle" font-family="Arial" font-weight="bold" font-size="18">Collection: Turniere</text>
+  <rect x="770" y="100" width="260" height="250" stroke="#000" fill="#fff" stroke-width="1" rx="5" ry="5" />
+  <text x="780" y="120" font-family="Courier New" font-size="12">_id: ObjectId</text>
+  <text x="780" y="140" font-family="Courier New" font-size="12">name: String</text>
+  <text x="780" y="160" font-family="Courier New" font-size="12">startdatum: Date</text>
+  <text x="780" y="180" font-family="Courier New" font-size="12">enddatum: Date</text>
+  <text x="780" y="200" font-family="Courier New" font-size="12">ort: String</text>
+  <text x="780" y="220" font-family="Courier New" font-size="12">preispool: Float</text>
+  <text x="780" y="240" font-family="Courier New" font-size="12">format: String</text>
+  <text x="780" y="260" font-family="Courier New" font-size="12">teams: [ObjectId] → Teams</text>
+  <text x="780" y="280" font-family="Courier New" font-size="12">spiele: [</text>
+  <text x="800" y="300" font-family="Courier New" font-size="12">{ ... } // Eingebettete Spiele</text>
+  <text x="780" y="320" font-family="Courier New" font-size="12">]</text>
+  <text x="780" y="340" font-family="Courier New" font-size="12">sponsoren: [ObjectId] → Sponsoren</text>
+  
+  <!-- Collection: Sponsoren -->
+  <rect x="400" y="400" width="300" height="180" stroke="#000" fill="#f0f8ff" stroke-width="2" rx="10" ry="10" />
+  <text x="550" y="430" text-anchor="middle" font-family="Arial" font-weight="bold" font-size="18">Collection: Sponsoren</text>
+  <rect x="420" y="450" width="260" height="110" stroke="#000" fill="#fff" stroke-width="1" rx="5" ry="5" />
+  <text x="430" y="470" font-family="Courier New" font-size="12">_id: ObjectId</text>
+  <text x="430" y="490" font-family="Courier New" font-size="12">name: String</text>
+  <text x="430" y="510" font-family="Courier New" font-size="12">branche: String</text>
+  <text x="430" y="530" font-family="Courier New" font-size="12">kontaktperson: String</text>
+  <text x="430" y="550" font-family="Courier New" font-size="12">budget: Float</text>
+  
+  <!-- Eingebettetes Dokument: Spiele in Turniere -->
+  <rect x="750" y="450" width="300" height="180" stroke="#000" fill="#e6ffe6" stroke-width="2" rx="10" ry="10" />
+  <text x="900" y="480" text-anchor="middle" font-family="Arial" font-weight="bold" font-size="18">Eingebettete Spiele</text>
+  <rect x="770" y="500" width="260" height="110" stroke="#000" fill="#fff" stroke-width="1" rx="5" ry="5" />
+  <text x="780" y="520" font-family="Courier New" font-size="12">startzeit: Date</text>
+  <text x="780" y="540" font-family="Courier New" font-size="12">dauer: Int</text>
+  <text x="780" y="560" font-family="Courier New" font-size="12">team1: ObjectId → Teams</text>
+  <text x="780" y="580" font-family="Courier New" font-size="12">team2: ObjectId → Teams</text>
+  <text x="780" y="600" font-family="Courier New" font-size="12">ergebnis: String</text>
+  
+  <!-- Pfeile für Beziehungen -->
+  <line x1="220" y1="250" x2="220" y2="280" stroke="#000" stroke-width="1" stroke-dasharray="5,5" />
+  <line x1="220" y1="280" x2="420" y2="280" stroke="#000" stroke-width="1" stroke-dasharray="5,5" />
+  <polygon points="420,280 410,275 410,285" fill="#000" />
+  
+  <line x1="550" y1="330" x2="550" y2="400" stroke="#000" stroke-width="1" stroke-dasharray="5,5" />
+  <polygon points="550,400 545,390 555,390" fill="#000" />
+  
+  <line x1="680" y1="230" x2="770" y2="230" stroke="#000" stroke-width="1" stroke-dasharray="5,5" />
+  <polygon points="770,230 760,225 760,235" fill="#000" />
+  
+  <line x1="780" y1="340" x2="700" y2="400" stroke="#000" stroke-width="1" stroke-dasharray="5,5" />
+  <polygon points="700,400 700,390 710,395" fill="#000" />
+  
+  <line x1="900" y1="350" x2="900" y2="450" stroke="#000" stroke-width="1" />
+  <polygon points="900,450 895,440 905,440" fill="#000" />
+
+  <!-- Legende -->
+  <rect x="50" y="650" width="280" height="100" stroke="#000" fill="#f9f9f9" stroke-width="1" rx="5" ry="5" />
+  <text x="60" y="670" font-family="Arial" font-weight="bold" font-size="14">Legende:</text>
+  <line x1="60" y1="680" x2="90" y2="680" stroke="#000" stroke-width="1" stroke-dasharray="5,5" />
+  <text x="100" y="685" font-family="Arial" font-size="12">Referenz (ObjectId)</text>
+  <line x1="60" y1="700" x2="90" y2="700" stroke="#000" stroke-width="1" />
+  <text x="100" y="705" font-family="Arial" font-size="12">Einbettung (Verschachtelung)</text>
+  <rect x="60" y="715" width="15" height="15" stroke="#000" fill="#e6ffe6" stroke-width="1" />
+  <text x="100" y="725" font-family="Arial" font-size="12">Eingebettetes Dokument</text>
+</svg>

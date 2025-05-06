@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 600">
+  <!-- Entitäten -->
+  <!-- Spieler -->
+  <rect x="100" y="100" width="120" height="60" stroke="#000" fill="#e6f2ff" stroke-width="2" />
+  <text x="160" y="135" text-anchor="middle" font-family="Arial" font-size="14">Spieler</text>
+  
+  <!-- Teams -->
+  <rect x="400" y="100" width="120" height="60" stroke="#000" fill="#e6f2ff" stroke-width="2" />
+  <text x="460" y="135" text-anchor="middle" font-family="Arial" font-size="14">Teams</text>
+  
+  <!-- Turniere -->
+  <rect x="700" y="100" width="120" height="60" stroke="#000" fill="#e6f2ff" stroke-width="2" />
+  <text x="760" y="135" text-anchor="middle" font-family="Arial" font-size="14">Turniere</text>
+  
+  <!-- Spiele -->
+  <rect x="700" y="300" width="120" height="60" stroke="#000" fill="#e6f2ff" stroke-width="2" />
+  <text x="760" y="335" text-anchor="middle" font-family="Arial" font-size="14">Spiele</text>
+  
+  <!-- Sponsoren -->
+  <rect x="400" y="500" width="120" height="60" stroke="#000" fill="#e6f2ff" stroke-width="2" />
+  <text x="460" y="535" text-anchor="middle" font-family="Arial" font-size="14">Sponsoren</text>
+  
+  <!-- Beziehungen -->
+  <!-- Spieler - Teams (N:M) -->
+  <line x1="220" y1="130" x2="400" y2="130" stroke="#000" stroke-width="2" />
+  <text x="310" y="115" text-anchor="middle" font-family="Arial" font-size="12">gehört zu</text>
+  <text x="240" y="150" text-anchor="middle" font-family="Arial" font-size="12">N</text>
+  <text x="380" y="150" text-anchor="middle" font-family="Arial" font-size="12">M</text>
+  
+  <!-- Teams - Turniere (N:M) -->
+  <line x1="520" y1="130" x2="700" y2="130" stroke="#000" stroke-width="2" />
+  <text x="610" y="115" text-anchor="middle" font-family="Arial" font-size="12">nimmt teil an</text>
+  <text x="540" y="150" text-anchor="middle" font-family="Arial" font-size="12">N</text>
+  <text x="680" y="150" text-anchor="middle" font-family="Arial" font-size="12">M</text>
+  
+  <!-- Turniere - Spiele (1:N) -->
+  <line x1="760" y1="160" x2="760" y2="300" stroke="#000" stroke-width="2" />
+  <text x="785" y="230" text-anchor="middle" font-family="Arial" font-size="12">besteht aus</text>
+  <text x="745" y="180" text-anchor="middle" font-family="Arial" font-size="12">1</text>
+  <text x="745" y="280" text-anchor="middle" font-family="Arial" font-size="12">N</text>
+  
+  <!-- Teams - Spiele (N:M) -->
+  <line x1="520" y1="130" x2="700" y2="300" stroke="#000" stroke-width="2" />
+  <text x="600" y="220" text-anchor="middle" font-family="Arial" font-size="12">spielt in</text>
+  <text x="540" y="150" text-anchor="middle" font-family="Arial" font-size="12">N</text>
+  <text x="680" y="280" text-anchor="middle" font-family="Arial" font-size="12">M</text>
+  
+  <!-- Sponsoren - Teams (N:M) -->
+  <line x1="460" y1="500" x2="460" y2="160" stroke="#000" stroke-width="2" />
+  <text x="485" y="330" text-anchor="middle" font-family="Arial" font-size="12">sponsert</text>
+  <text x="445" y="480" text-anchor="middle" font-family="Arial" font-size="12">N</text>
+  <text x="445" y="180" text-anchor="middle" font-family="Arial" font-size="12">M</text>
+  
+  <!-- Sponsoren - Turniere (N:M) -->
+  <line x1="520" y1="530" x2="760" y2="160" stroke="#000" stroke-width="2" />
+  <text x="640" y="350" text-anchor="middle" font-family="Arial" font-size="12">sponsert</text>
+  <text x="540" y="510" text-anchor="middle" font-family="Arial" font-size="12">N</text>
+  <text x="740" y="180" text-anchor="middle" font-family="Arial" font-size="12">M</text>
+</svg>
