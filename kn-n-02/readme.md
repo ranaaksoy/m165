@@ -1,187 +1,184 @@
-## KN-N-02
+## A) Daten hinzufügen (CREATE Statement)
 
-### A) Daten hinzufügen
+**Datei-Inhalt:**
 
-#### 1. Themenwelt: Sprachschule
+[Script](create_data.cypher)
 
-[Script](sprachschule_datenmodell.cypher)
+## B) Daten abfragen
 
-**Labels (Knotenarten):**
-
-•	Kurs
-
-•	Lehrperson
-
-•	Schueler
-
-•	Raum
-
-**Beziehungen (Kanten):**
-
-•	UNTERRICHTET: Lehrperson → Kurs
-
-•	BELEGT: Schueler → Kurs
-
-•	FINDET_STATT_IN: Kurs → Raum
-
-### B) Daten abfragen
-
-#### 1. Erklärung: Alle Knoten und Kanten lesen
+#### Erklärung: Alle Knoten und Kanten (inkl. OPTIONAL MATCH)
 
 ```cypher
-MATCH (n)-[r]->(m)
-RETURN n, r, m
+MATCH (n)
+OPTIONAL MATCH (n)-[r]->(m)
+RETURN n, r, m;
 ```
-![alt text](<Bildschirmfoto 2025-05-06 um 10.52.42.png>)
 
-**•	MATCH (n)-[r]->(m):** Findet alle Verbindungen zwischen Knoten.
+![alt text](<Bildschirmfoto 2025-05-09 um 18.03.16.png>)
 
-**•	RETURN n, r, m:** Zeigt alle Knoten und ihre Beziehungen.
+**Erklärung:**
 
-**•	OPTIONAL MATCH:** Diese Klausel zeigt auch Knoten ohne Beziehungen. 
+•	MATCH (n) findet alle Knoten.
 
-**Beispiel:**
+•	OPTIONAL MATCH (n)-[r]->(m) versucht, alle ausgehenden Beziehungen zu finden – auch wenn es keine gibt.
+
+•	So bekommt man auch isolierte Knoten, die keine Kanten haben.
+
+#### Vier komplexe Szenarien
+
+##### Bestellungen mit Elektronik-Produkten
+
+**Erklärung:** Zeige alle Bestellungen, die Produkte aus der Kategorie “Elektronik” enthalten.
+
+```cypher
+MATCH (u:User)-[:BESTELLT]->(o:Order)-[:BEINHALTET]->(p:Product)-[:GEHÖRT_ZU]->(c:Category)
+WHERE c.name = "Elektronik"
+RETURN u.name, p.title;
+```
+
+![alt text](<Bildschirmfoto 2025-05-09 um 18.03.46.png>)
+
+##### Nutzer mit offenen Bestellungen und Produkten über 100€
+
+**Erklärung:** Zeige Benutzer, die offene Bestellungen mit Produkten über 100€ gemacht haben.
+
+```cypher
+MATCH (u:User)-[:BESTELLT]->(o:Order)-[:BEINHALTET]->(p:Product)
+WHERE o.status = "offen" AND p.price > 100
+RETURN u.name, o.order_id, p.title, p.price;
+```
+
+![alt text](<Bildschirmfoto 2025-05-09 um 18.05.02.png>)
+
+##### Produkte ohne zugehörige Kategorie
+
+**Erklärung:** Finde alle Produkte, die keiner Kategorie zugeordnet sind.
+
+```cypher
+MATCH (p:Product)
+OPTIONAL MATCH (p)-[:GEHÖRT_ZU]->(c:Category)
+WHERE c IS NULL
+RETURN p.title;
+```
+
+![alt text](<Bildschirmfoto 2025-05-09 um 18.05.28.png>)
+
+##### Kategorien mit mehr als einem Produkt
+
+**Erklärung:** Zeige alle Kategorien, die mehr als ein Produkt enthalten.
 
 ```cypher 
-MATCH (n:Kurs)
-OPTIONAL MATCH (n)-[r]->(m)
-RETURN n, r, m
+MATCH (c:Category)<-[:GEHÖRT_ZU]-(p:Product)
+WITH c, count(p) AS produktAnzahl
+WHERE produktAnzahl > 1
+RETURN c.name, produktAnzahl;
 ```
 
-![alt text](<Bildschirmfoto 2025-05-06 um 10.48.37.png>)
+![alt text](<Bildschirmfoto 2025-05-09 um 18.05.45.png>) 
 
-#### 2. Szenarien mit Abfragen
+## C) Daten löschen (DETACH)
 
-##### Szenario 1: Alle Kurse und ihre Räume
-Zeige alle Kurse mit zugeordnetem Raum (inkl. Raum-Details).
+### Ohne DETACH:
+
+```cypher 
+MATCH (p:Product {product_id: 101})
+DELETE p;
+```
+
+**Erwartung:** Fehler, weil Beziehungen vorhanden sind.
+
+![alt text](<Bildschirmfoto 2025-05-09 um 18.06.51.png>)
+
+### Mit DETACH:
+
+```cypher 
+MATCH (p:Product {product_id: 101})
+DETACH DELETE p;
+```
+
+![alt text](<Bildschirmfoto 2025-05-09 um 18.07.13.png>)
+
+**Erwartung:** Erfolgreich gelöscht inklusive aller Kanten.
+
+## D) Daten verändern (UPDATE)
+
+### Preis eines Produkts erhöhen
+
+Erhöhe den Preis des Laptops um 10%.
+
+```cypher 
+MATCH (p:Product {title: "Laptop"})
+SET p.price = p.price * 1.1
+RETURN p.title, p.price;
+```
+
+![alt text](<Bildschirmfoto 2025-05-09 um 18.07.34.png>)
+
+### Bestellstatus aktualisieren
+
+Ändere Status von Bestellung 202 auf “versendet”.
 
 ```cypher
-MATCH (k:Kurs)-[:FINDET_STATT_IN]->(r:Raum)
-RETURN k.name AS Kursname, r.nummer AS Raum, r.gebaeude AS Gebaeude
+MATCH (o:Order {order_id: 202})
+SET o.status = "versendet"
+RETURN o;
 ```
 
-![alt text](<Bildschirmfoto 2025-05-06 um 10.49.10.png>)
+![alt text](<Bildschirmfoto 2025-05-09 um 18.07.56.png>) 
 
-##### Szenario 2: Schüler:innen in einem bestimmten Kurs
-Zeige alle Schüler:innen im Kurs “Englisch A1”.
+### Produkt einer anderen Kategorie zuordnen
+
+Wechsle die Kategorie des Kochbuchs zu “Haushalt”.
 
 ```cypher
-MATCH (s:Schueler)-[:BELEGT]->(k:Kurs)
-WHERE k.name = "Englisch A1"
-RETURN s.name, s.alter
+MATCH (p:Product {title: "Kochbuch"})-[r:GEHÖRT_ZU]->()
+DELETE r
+WITH p
+MATCH (c:Category {name: "Haushalt"})
+CREATE (p)-[:GEHÖRT_ZU]->(c);
 ```
-![alt text](<Bildschirmfoto 2025-05-06 um 10.49.34.png>)
 
-**WHERE-Klausel verwendet**
+![alt text](<Bildschirmfoto 2025-05-09 um 18.12.47.png>)
 
-##### Szenario 3: Lehrpersonen, die keine Kurse unterrichten
-Zeige alle Lehrpersonen ohne Zuweisung.
+## E) Zusätzliche Klauseln
+
+### FOREACH – wiederholte Operation auf Liste
+
+**Beispiel:** Setze bei mehreren Produkten ein Attribut „inStock“.
 
 ```cypher
-MATCH (l:Lehrperson)
-OPTIONAL MATCH (l)-[r:UNTERRICHTET]->(k:Kurs)
-WHERE r IS NULL
-RETURN l.name
+MATCH (p:Product)
+WITH collect(p) AS produkte
+FOREACH (p IN produkte |
+  SET p.inStock = true
+);
 ```
-![alt text](<Bildschirmfoto 2025-05-06 um 10.49.49.png>)
 
-**OPTIONAL + WHERE IS NULL**
+![alt text](<Bildschirmfoto 2025-05-09 um 18.13.03.png>)
 
-##### Szenario 4: Welche Räume werden für fortgeschrittene Kurse verwendet?
+**Erklärung:** Iteriert über Produktliste und fügt Attribut hinzu.
+
+### MERGE – Erstelle nur, wenn nicht vorhanden
+
+**Beispiel:** Nutzer „David“ nur hinzufügen, wenn er noch nicht existiert.
 
 ```cypher
-MATCH (k:Kurs)-[:FINDET_STATT_IN]->(r:Raum)
-WHERE k.niveau = "Fortgeschritten"
-RETURN DISTINCT r.nummer, r.gebaeude
+MERGE (u:User {email: "david@example.com"})
+ON CREATE SET u.name = "David König", u.user_id = 4;
 ```
+**Erklärung:** Vermeidet Duplikate, erstellt nur wenn noch nicht vorhanden.
 
-![alt text](<Bildschirmfoto 2025-05-06 um 10.50.26.png>)
+![alt text](<Bildschirmfoto 2025-05-09 um 18.13.37.png>)
 
-### C) Daten löschen
 
-**Beispiel-Objekte:**
+ 
 
-•	s5 (Schueler Tom)
+ 
+ 
+ 
+ 
+ 
+ 
 
-#### 1. Ohne DETACH DELETE (Fehler bei bestehenden Beziehungen!)
-
-```cypher
-MATCH (s:Schueler {name: "Tom"})
-DELETE s
-```
-![alt text](<Bildschirmfoto 2025-05-06 um 10.50.49.png>)
-
-#### 2. Mit DETACH DELETE
-
-```cypher
-MATCH (s:Schueler {name: "Tom"})
-DETACH DELETE s
-```
-
-![alt text](<Bildschirmfoto 2025-05-06 um 10.51.10.png>) 
-
-### D) Daten verändern
-
-##### Szenario 1: Kursdauer ändern
-
-Der Kurs “Deutsch B2” dauert jetzt nur 90 Minuten.
-
-```cypher
-MATCH (k:Kurs {name: "Deutsch B2"})
-SET k.dauer = 90
-```
-
-![alt text](<Bildschirmfoto 2025-05-06 um 10.51.26.png>)
-
-##### Szenario 2: Lehrperson wechselt Fach
-
-Frau Dubois unterrichtet nun Spanisch.
-
-```cypher
-MATCH (l:Lehrperson {name: "Frau Dubois"})
-SET l.fach = "Spanisch"
-```
-
-![alt text](<Bildschirmfoto 2025-05-06 um 10.51.26.png>)
-
-##### Szenario 3: Raumnummer eines Kurses ändern
-
-Der Kurs “Französisch A2” findet neu im Raum “203” statt.
-
-```cypher
-MATCH (k:Kurs {name: "Französisch A2"})-[rel:FINDET_STATT_IN]->(r:Raum)
-DELETE rel
-
-CREATE (newRaum:Raum {nummer: "203", gebaeude: "B"})
-CREATE (k)-[:FINDET_STATT_IN]->(newRaum)
-```
-
-![alt text](image.png)
-
-### E) Zusätzliche Klauseln
-
-#### 1. ORDER BY
-
-**Erklärung:** Sortiert Ergebnisse nach einem Feld (z.B. Name oder Alter).
-
-```cypher
-MATCH (s:Schueler)
-RETURN s.name, s.alter
-ORDER BY s.alter DESC
-```
-Zeigt alle Schüler:innen sortiert nach Alter absteigend.
-
-![alt text](<Bildschirmfoto 2025-05-06 um 10.53.19.png>)
-
-#### 2. LIMIT
-
-**Erklärung:** Beschränkt die Anzahl der Ergebnisse.
-
-```cypher
-MATCH (s:Schueler)
-RETURN s.name, s.alter
-ORDER BY s.alter DESC
-LIMIT 2
-```
-
-![alt text](<Bildschirmfoto 2025-05-06 um 10.53.37.png>)
+ 
+ 
